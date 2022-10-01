@@ -11,7 +11,7 @@ class Crawler{
         this.skuId = {};
     }
 
-    async search(productsMax, provincy){
+    async search(productsMax, provincy, searchFrom){
 
         let driver = await new Builder().forBrowser('chrome').build();
 
@@ -42,9 +42,16 @@ class Crawler{
         
             await markets[0].click();
             
-            //part 2, adicionando na lista de urls todos os produtos achados na pagina principal
-            logger.info("Procurando produtos na página principal");
-            await this.searchURLsOnThePage(driver);
+            //part 2, adicionando na lista de urls todos os produtos achados a partir de alguma url de mercado.carrefour.com.br
+            if(searchFrom){
+                logger.info(`Procurando produtos a partir da página${searchFrom}`);
+                await driver.get(searchFrom);
+                await this.searchURLsOnThePage(driver);
+            } else {
+                logger.info("Procurando produtos a partir da página principal");
+                await this.searchURLsOnThePage(driver);
+            }
+            
             //part 3, pra cada produto adicionado salvar informaçoes e procurar mais produtos na pagina
             //ate a quantidade de produtos ser igual productsMax
             for (let productURL of this.productsURLs) {
@@ -74,7 +81,7 @@ class Crawler{
     async searchURLsOnThePage(driver) {
 
         try{
-            await driver.wait(until.elementLocated(By.className('css-1yflmu0')), 10000);
+            await driver.wait(until.elementLocated(By.className('css-1yflmu0')), 5000);
         } catch (error) {
             logger.error(`Não conseguiu achar produtos na página (${error.name})`);
             return ;

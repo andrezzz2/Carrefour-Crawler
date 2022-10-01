@@ -1,13 +1,15 @@
-var fs = require('fs');
+require('dotenv').config();
+
 const Crawler = require('./_crawler');
 const crawler =  new Crawler();
-
-//10 é a quantidade de produtos para buscar
+/*
 const productsMax = 5
 const provincy = "Recife"
-crawler.search(productsMax, provincy).then( products => {
+const searchFrom = null
+*/
+crawler.search(process.env.PRODUCTS_MAX, process.env.PROVINCY, process.env.SEARCH_FROM).then( products => {
 
-    //console.log(products);
+    var fs = require('fs');
     fs.writeFile(`${__dirname}/products.json`, JSON.stringify(products, null, 4), function(err) {
         if(err) {
             console.log(err);

@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^0.27.2",
     "chromedriver": "^105.0.1",
+    "dotenv": "^16.0.3",
     "selenium-webdriver": "^4.4.0",
     "winston": "^3.8.2"
   }
